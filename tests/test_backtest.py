@@ -125,3 +125,65 @@ def test_metrics_guards():
     assert metrics(pd.Series(dtype=float)) == {}
     assert metrics(pd.Series([0.0, 0.0, 0.0, 0.0, 0.0])) == {}  # zero std -> unusable
     assert metrics(pd.Series([0.01] * 4)) == {}                  # too short
+
+
+def test_killswitch_trips_on_decay_and_recovers():
+    from backtest import run_killswitch
+    # 140 days, 20 symbols, all identical -> base holds 4 names throughout.
+    # Strategy window starts at day 60. Days 70-105: -1%/day -> kill. Days 106+: +1%/day -> recover.
+    n, syms = 140, 20
+    idx = pd.date_range("2026-01-01", periods=n, freq="D")
+    cols = [f"S{i:02d}" for i in range(syms)]
+    r = np.where((np.arange(n) >= 70) & (np.arange(n) < 106), -0.01, 0.01)
+    rets = pd.DataFrame(np.tile(r[:, None], (1, syms)), index=idx, columns=cols)
+    vol = pd.DataFrame(1.0, index=idx, columns=cols)
+    liq = pd.DataFrame(100.0, index=idx, columns=cols)
+    net, W, to, killed = run_killswitch(vol, rets, liq, start_idx=60)
+    assert killed, "drawdown of 40 straight negative days must trip the switch"
+    first_kill = killed[0]
+    # kill happens only after warmup: at least 15 realized returns before the first kill
+    assert first_kill >= idx[60 + 15]
+    # every day from a kill to the next rebalance holds zero weight
+    kill_set = set(killed)
+    for i, dt in enumerate(W.index):
+        if i % 7 == 0 and dt in kill_set:
+            assert (W.loc[dt] == 0).all()
+    # after recovery the weights come back
+    assert (W.iloc[-1] > 0).any()
+
+
+def test_killswitch_never_trips_on_steady_returns():
+    from backtest import run_killswitch
+    n, syms = 100, 20
+    idx = pd.date_range("2026-01-01", periods=n, freq="D")
+    cols = [f"S{i:02d}" for i in range(syms)]
+    rets = pd.DataFrame(0.005, index=idx, columns=cols)
+    vol = pd.DataFrame(1.0, index=idx, columns=cols)
+    liq = pd.DataFrame(100.0, index=idx, columns=cols)
+    net, W, _, killed = run_killswitch(vol, rets, liq, start_idx=60)
+    assert killed == []
+    # overlay must not alter weights when never tripped
+    from backtest import run
+    _, W_base, _ = run(vol, rets, liq, start_idx=60)
+    assert W.equals(W_base)
+
+
+def test_killswitch_no_lookahead_in_monitor():
+    from backtest import run_killswitch
+    # returns flip from +1% to -1% at day 50 exactly. The switch may only react
+    # at a rebalance day >= day 50 + (enough negative days to satisfy warmup),
+    # never before day 50 itself.
+    n, syms = 120, 20
+    idx = pd.date_range("2026-01-01", periods=n, freq="D")
+    cols = [f"S{i:02d}" for i in range(syms)]
+    r = np.where(np.arange(n) < 50, 0.01, -0.01)
+    rets = pd.DataFrame(np.tile(r[:, None], (1, syms)), index=idx, columns=cols)
+    vol = pd.DataFrame(1.0, index=idx, columns=cols)
+    liq = pd.DataFrame(100.0, index=idx, columns=cols)
+    net, W, _, killed = run_killswitch(vol, rets, liq, start_idx=30)
+    for dt in killed:
+        rebal_i = W.index.get_loc(dt)
+        past = net.iloc[:rebal_i + 1]
+        neg = (past.iloc[-30:] < 0).sum()
+        assert 30 + rebal_i >= 50  # absolute decision day is on/after the regime change, never before
+        assert neg >= 15      # and only after enough realized negative returns

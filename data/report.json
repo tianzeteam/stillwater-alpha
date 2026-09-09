@@ -101,6 +101,23 @@
    "max_dd_pct": -3.4
   }
  },
+ "vol_40_killswitch": {
+  "IS": {
+   "ann_ret_pct": 2.8,
+   "ann_vol_pct": 9.3,
+   "sharpe": 0.3,
+   "max_dd_pct": -6.9
+  },
+  "OS": {
+   "ann_ret_pct": 12.3,
+   "ann_vol_pct": 7.5,
+   "sharpe": 1.64,
+   "max_dd_pct": -3.4
+  },
+  "killed_weeks": 11,
+  "first_kill": "2026-02-16",
+  "last_kill": "2026-08-21"
+ },
  "ew_benchmark": {
   "IS": {
    "ann_ret_pct": 29.6,

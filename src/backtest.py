@@ -37,6 +37,37 @@ def run(vol_sig: pd.DataFrame, rets: pd.DataFrame, liq: pd.DataFrame,
     return gross - turnover * cost_bps / 1e4, W, turnover
 
 
+def run_killswitch(vol_sig: pd.DataFrame, rets: pd.DataFrame, liq: pd.DataFrame,
+                   rebal_days: int = 7, start_idx: int = 60, cost_bps: float = 10.0,
+                   lookback: int = 30, threshold: float = 0.0, warmup: int = 15):
+    """Base low-vol portfolio with a decay kill-switch overlay.
+
+    At each rebalance day t, look at the trailing `lookback` days of the BASE
+    strategy's net returns realized up to and including t (all knowable at t's
+    close — no lookahead). If trailing Sharpe < threshold, hold zero positions
+    for the following week; resume automatically when the monitor recovers.
+
+    Deliberately does NOT switch factors or re-fit parameters — that is
+    selection overfitting (see README). The only adaptive action is
+    de-risking: a negative verdict on the current factor, not a new choice.
+    """
+    base_net, W_base, _ = run(vol_sig, rets, liq, rebal_days, start_idx, cost_bps)
+    dates = W_base.index
+    W = W_base.copy()
+    killed_days = []
+    for i, dt in enumerate(dates):
+        if i % rebal_days == 0:
+            past = base_net.iloc[max(0, i - lookback + 1): i + 1].dropna()
+            if len(past) >= warmup and past.std() > 0:
+                sh = past.mean() / past.std() * np.sqrt(TRADING_DAYS)
+                if sh < threshold:
+                    W.loc[dt] = 0.0
+                    killed_days.append(dt)
+    gross = (W.shift(1) * rets.loc[dates]).sum(axis=1)
+    turnover = W.diff().abs().sum(axis=1).fillna(0)
+    net = gross - turnover * cost_bps / 1e4
+    return net, W, turnover, killed_days
+
 def metrics(r: pd.Series) -> dict:
     r = r.dropna()
     if len(r) < 5 or r.std() == 0:

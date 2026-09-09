@@ -25,10 +25,18 @@ def main():
         net, W, to = run(sig, rets, liq)
         report[name] = is_os_report(net, split) | {"avg_daily_turnover": round(float(to.mean()), 3)}
 
-    # cost sensitivity for the chosen variant (vol_40)
+    # cost sensitivity for the chosen variant (vol_40) + decay kill-switch overlay
+    from backtest import run_killswitch
+    vol40 = volatility_factors(rets)["vol_40"]
     for bps in (10, 20, 30):
-        net, _, _ = run(volatility_factors(rets)["vol_40"], rets, liq, cost_bps=bps)
+        net, _, _ = run(vol40, rets, liq, cost_bps=bps)
         report[f"vol_40_cost_{bps}bps"] = is_os_report(net, split)
+    net, _, _, killed = run_killswitch(vol40, rets, liq)
+    report["vol_40_killswitch"] = is_os_report(net, split) | {
+        "killed_weeks": len(killed),
+        "first_kill": str(killed[0].date()) if killed else None,
+        "last_kill": str(killed[-1].date()) if killed else None,
+    }
 
     # equal-weight benchmark on the same window
     bench = rets.loc[rets.index[60]:].mean(axis=1)
