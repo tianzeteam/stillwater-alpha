@@ -1,0 +1,47 @@
+{
+ "lowvol40_only": {
+  "IS": {
+   "ann": 8.7,
+   "vol": 9.8,
+   "sharpe": 0.89,
+   "mdd": -6.3
+  },
+  "OS": {
+   "ann": 9.7,
+   "vol": 9.4,
+   "sharpe": 1.03,
+   "mdd": -5.6
+  },
+  "daily_turnover": 0.03
+ },
+ "lottery_only(max+skew)": {
+  "IS": {
+   "ann": -2.3,
+   "vol": 14.7,
+   "sharpe": -0.16,
+   "mdd": -10.5
+  },
+  "OS": {
+   "ann": -4.9,
+   "vol": 12.6,
+   "sharpe": -0.39,
+   "mdd": -7.0
+  },
+  "daily_turnover": 0.098
+ },
+ "lowvol+lottery": {
+  "IS": {
+   "ann": 4.0,
+   "vol": 12.9,
+   "sharpe": 0.31,
+   "mdd": -9.1
+  },
+  "OS": {
+   "ann": 6.5,
+   "vol": 11.7,
+   "sharpe": 0.56,
+   "mdd": -6.4
+  },
+  "daily_turnover": 0.077
+ }
+}

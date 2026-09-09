@@ -1,0 +1,77 @@
+{
+ "Momentum 20d (long top 20%)": {
+  "IS": {
+   "ann_ret": 33.2,
+   "ann_vol": 23.2,
+   "sharpe": 1.43,
+   "maxDD": -11.3
+  },
+  "OS": {
+   "ann_ret": -5.6,
+   "ann_vol": 40.8,
+   "sharpe": -0.14,
+   "maxDD": -20.6
+  },
+  "avg_weekly_turnover": 0.114
+ },
+ "Momentum 60d (long top 20%)": {
+  "IS": {
+   "ann_ret": 58.2,
+   "ann_vol": 17.5,
+   "sharpe": 3.33,
+   "maxDD": -6.4
+  },
+  "OS": {
+   "ann_ret": -2.3,
+   "ann_vol": 35.0,
+   "sharpe": -0.07,
+   "maxDD": -18.0
+  },
+  "avg_weekly_turnover": 0.075
+ },
+ "Reversal 5d (long bottom 20%)": {
+  "IS": {
+   "ann_ret": -12.4,
+   "ann_vol": 36.3,
+   "sharpe": -0.34,
+   "maxDD": -27.7
+  },
+  "OS": {
+   "ann_ret": 73.4,
+   "ann_vol": 29.4,
+   "sharpe": 2.49,
+   "maxDD": -11.2
+  },
+  "avg_weekly_turnover": 0.201
+ },
+ "Reversal 10d (long bottom 20%)": {
+  "IS": {
+   "ann_ret": -18.2,
+   "ann_vol": 37.6,
+   "sharpe": -0.48,
+   "maxDD": -29.6
+  },
+  "OS": {
+   "ann_ret": 50.4,
+   "ann_vol": 26.1,
+   "sharpe": 1.93,
+   "maxDD": -12.9
+  },
+  "avg_weekly_turnover": 0.173
+ },
+ "EW universe benchmark": {
+  "IS": {
+   "ann_ret": Infinity,
+   "ann_vol": NaN,
+   "sharpe": 0,
+   "maxDD": -5.4
+  },
+  "OS": {
+   "ann_ret": 34.7,
+   "ann_vol": 18.8,
+   "sharpe": 1.84,
+   "maxDD": -6.3
+  },
+  "avg_weekly_turnover": 0
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "regime_switch(lowvol + rev_when_highvol)": {
+  "IS": {
+   "ann_ret": 30.6,
+   "ann_vol": 23.1,
+   "sharpe": 1.33,
+   "maxDD": -8.1
+  },
+  "OS": {
+   "ann_ret": -12.6,
+   "ann_vol": 13.0,
+   "sharpe": -0.97,
+   "maxDD": -8.9
+  },
+  "daily_turnover": 0.116,
+  "hi_vol_regime_share": 0.34
+ }
+}

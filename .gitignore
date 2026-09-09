@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+data/closes_raw.json
+data/*.pkl
+.pytest_cache/

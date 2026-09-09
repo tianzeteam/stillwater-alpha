@@ -1,0 +1,31 @@
+{
+ "SHORT_highMAX (theoretical, no borrow cost)": {
+  "IS": {
+   "ann": -25.8,
+   "vol": 11.4,
+   "sharpe": -2.26,
+   "mdd": -10.1
+  },
+  "OS": {
+   "ann": -6.7,
+   "vol": 12.4,
+   "sharpe": -0.54,
+   "mdd": -4.7
+  }
+ },
+ "lowvol+residmom": {
+  "IS": {
+   "ann": 2.3,
+   "vol": 16.1,
+   "sharpe": 0.14,
+   "mdd": -9.6
+  },
+  "OS": {
+   "ann": -25.6,
+   "vol": 17.6,
+   "sharpe": -1.46,
+   "mdd": -13.3
+  },
+  "daily_turnover": 0.112
+ }
+}

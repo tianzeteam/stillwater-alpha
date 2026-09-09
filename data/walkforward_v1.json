@@ -1,0 +1,45 @@
+{
+ "walk_forward_selection": {
+  "IS": {
+   "ann": NaN,
+   "vol": NaN,
+   "sharpe": NaN,
+   "mdd": NaN
+  },
+  "OS": {
+   "ann": -66.7,
+   "vol": 39.1,
+   "sharpe": -1.71,
+   "mdd": -33.1
+  },
+  "n_switches": 4,
+  "last_5_choices": [
+   [
+    "2026-05-21",
+    2.74,
+    1.7
+   ],
+   [
+    "2026-06-24",
+    1.53,
+    1.18
+   ],
+   [
+    "2026-07-24",
+    "EW",
+    1.06
+   ],
+   [
+    "2026-08-23",
+    3.11,
+    2.16
+   ]
+  ]
+ },
+ "vol40_cost_sensitivity": {
+  "10bps": 1.12,
+  "20bps": 0.99,
+  "30bps": 0.86
+ },
+ "EW_benchmark_full": 1.65
+}

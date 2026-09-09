@@ -1,0 +1,90 @@
+{
+ "vol_10": {
+  "IS": {
+   "ann": -2.5,
+   "vol": 10.4,
+   "sharpe": -0.24,
+   "mdd": -9.5
+  },
+  "OS": {
+   "ann": 0.8,
+   "vol": 10.4,
+   "sharpe": 0.08,
+   "mdd": -6.1
+  },
+  "etf_share_OS": 0.19
+ },
+ "vol_20": {
+  "IS": {
+   "ann": 9.0,
+   "vol": 9.5,
+   "sharpe": 0.95,
+   "mdd": -6.1
+  },
+  "OS": {
+   "ann": 4.0,
+   "vol": 9.1,
+   "sharpe": 0.44,
+   "mdd": -4.7
+  },
+  "etf_share_OS": 0.19
+ },
+ "vol_40": {
+  "IS": {
+   "ann": 8.7,
+   "vol": 9.8,
+   "sharpe": 0.89,
+   "mdd": -6.3
+  },
+  "OS": {
+   "ann": 9.7,
+   "vol": 9.4,
+   "sharpe": 1.03,
+   "mdd": -5.6
+  },
+  "etf_share_OS": 0.19
+ },
+ "dnvol_20": {
+  "IS": {
+   "ann": 13.0,
+   "vol": 10.3,
+   "sharpe": 1.26,
+   "mdd": -7.9
+  },
+  "OS": {
+   "ann": 4.8,
+   "vol": 9.4,
+   "sharpe": 0.51,
+   "mdd": -5.3
+  },
+  "etf_share_OS": 0.19
+ },
+ "vol_20_stocks_only": {
+  "IS": {
+   "ann": -7.5,
+   "vol": 14.2,
+   "sharpe": -0.53,
+   "mdd": -13.7
+  },
+  "OS": {
+   "ann": 2.5,
+   "vol": 13.5,
+   "sharpe": 0.19,
+   "mdd": -4.8
+  }
+ },
+ "vol_20_etfs_only": {
+  "IS": {
+   "ann": -4.3,
+   "vol": 6.4,
+   "sharpe": -0.68,
+   "mdd": -5.2
+  },
+  "OS": {
+   "ann": -7.3,
+   "vol": 6.5,
+   "sharpe": -1.13,
+   "mdd": -4.4
+  }
+ }
+}

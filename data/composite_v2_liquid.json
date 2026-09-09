@@ -1,0 +1,58 @@
+{
+ "rev_5_liquid": {
+  "IS": {
+   "ann_ret": -41.7,
+   "ann_vol": 31.3,
+   "sharpe": -1.33,
+   "maxDD": -26.9
+  },
+  "OS": {
+   "ann_ret": 45.0,
+   "ann_vol": 22.4,
+   "sharpe": 2.01,
+   "maxDD": -10.3
+  }
+ },
+ "lowvol_liquid": {
+  "IS": {
+   "ann_ret": 10.7,
+   "ann_vol": 9.6,
+   "sharpe": 1.11,
+   "maxDD": -6.7
+  },
+  "OS": {
+   "ann_ret": 8.3,
+   "ann_vol": 8.7,
+   "sharpe": 0.96,
+   "maxDD": -5.3
+  }
+ },
+ "neg_volz_liquid": {
+  "IS": {
+   "ann_ret": -6.4,
+   "ann_vol": 23.6,
+   "sharpe": -0.27,
+   "maxDD": -21.1
+  },
+  "OS": {
+   "ann_ret": -31.5,
+   "ann_vol": 35.9,
+   "sharpe": -0.88,
+   "maxDD": -31.6
+  }
+ },
+ "composite_liquid": {
+  "IS": {
+   "ann_ret": -15.6,
+   "ann_vol": 18.0,
+   "sharpe": -0.86,
+   "maxDD": -17.2
+  },
+  "OS": {
+   "ann_ret": -11.6,
+   "ann_vol": 25.8,
+   "sharpe": -0.45,
+   "maxDD": -24.5
+  }
+ }
+}
