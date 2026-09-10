@@ -195,7 +195,7 @@ with tab_live:
 
 with tab_cost:
     bps = st.slider("Cost per side (bps)", 0, 50, 10, 5)
-    net_c = net + (P["to"] * (bps - 10) / 1e4)  # reprice cost relative to 10bps baseline
+    net_c = net - (P["to"] * (bps - 10) / 1e4)  # reprice cost relative to 10bps baseline
     m = metrics(net_c)
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Ann. return", f"{m.get('ann_ret_pct', '—')}%")
