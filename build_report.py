@@ -95,7 +95,7 @@ Plotly.newPlot("eq",[
 Plotly.newPlot("dd",[
  {x:DD_S.map(d=>d[0]),y:DD_S.map(d=>d[1]),name:"Stillwater drawdown",line:{color:blue}},
  {x:DD_B.map(d=>d[0]),y:DD_B.map(d=>d[1]),name:"Benchmark drawdown",line:{color:grey}}],
- {...layout(280),yaxis:{title:"Drawdown %",gridcolor:"#222"},legend:{orientation:"h"},
+ {...layout(280),yaxis:{ticksuffix:"%",gridcolor:"#222"},legend:{orientation:"h"},
  shapes:[{type:"rect",x0:SPLIT,x1:DD_S[DD_S.length-1][0],yref:"paper",y0:0,y1:1,fillcolor:"#1f77b4",opacity:0.08,line:{width:0}}]});
 
 Plotly.newPlot("cost",[{x:COST.map(d=>d[0]),y:COST.map(d=>d[1]),type:"bar",name:"Sharpe",
@@ -107,11 +107,12 @@ let done=0;
 const CACHED=__CACHED__,WT=__WT__;
 HELD.forEach(sym=>{
   const cached=CACHED[sym], w=WT[sym];
-  fetch("https://api.bitget.com/api/v2/spot/market/candles?symbol="+sym+"&granularity=1day&limit=2")
+  fetch("https://api.bitget.com/api/v2/spot/market/candles?symbol="+sym+"&granularity=1day&limit=2",{signal:AbortSignal.timeout(5000)})
     .then(r=>r.json()).then(d=>{
       const rows=d.data||[];const live=rows.length?parseFloat(rows[rows.length-1][2]):cached;
-      const chg=cached>0?((live/cached-1)*100).toFixed(2)+"%":"—";
-      body.insertAdjacentHTML("beforeend",`<tr><td>${sym}</td><td>${(w*100).toFixed(1)}%</td><td>${cached.toFixed(3)}</td><td>${live.toFixed(3)}</td><td>${chg}</td><td>live</td></tr>`);
+      const chg=cached>0?((live/cached-1)*100):"—";
+      const cls=(chg!=="—")?("pct-"+(chg>0?"pos":"neg")):"";
+      body.insertAdjacentHTML("beforeend",`<tr><td>${sym}</td><td>${(w*100).toFixed(1)}%</td><td>${cached.toFixed(3)}</td><td>${live.toFixed(3)}</td><td class="${cls}">${chg==="—"?"—":chg.toFixed(2)+"%"}</td><td>live</td></tr>`);
     })
     .catch(()=>{
       body.insertAdjacentHTML("beforeend",`<tr><td>${sym}</td><td>${(w*100).toFixed(1)}%</td><td>${cached.toFixed(3)}</td><td>${cached.toFixed(3)}</td><td>—</td><td>cached</td></tr>`);
@@ -119,24 +120,36 @@ HELD.forEach(sym=>{
     .finally(()=>{done++;if(done===HELD.length)foot.textContent="Δ vs last cached daily close. Prices from api.bitget.com public endpoints, fetched in your browser."});
 });
 </script>
-</body></html>'''
+</div></body></html>'''
 html_top = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stillwater（静水）— Low-Volatility Alpha for Bitget rTokens</title>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <style>
-body{{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:1080px;margin:0 auto;padding:24px;background:#0e1117;color:#e6e6e6}}
-h1{{margin-bottom:2px}} .tag{{color:#8ab4f8}}
-table{{border-collapse:collapse;width:100%;font-size:14px}}
-td,th{{border:1px solid #333;padding:6px 10px;text-align:left}}
+body{{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#0e1117;color:#e6e6e6;margin:0;padding:24px 0}}
+.wrap{{max-width:1120px;margin:0 auto;padding:0 20px}}
+h1{{margin-bottom:2px}}
+.tag{{color:#8ab4f8}}
+h2{{border-bottom:1px solid #2b3548;padding-bottom:6px;margin-top:26px}}
+table{{border-collapse:collapse;width:100%;font-size:13.5px}}
+td,th{{border:1px solid #333;padding:8px 10px;text-align:left}}
 th{{background:#1a1f2b}}
-.metrics span{{display:inline-block;background:#1a1f2b;border-radius:8px;padding:10px 16px;margin:4px 8px 4px 0}}
-.metrics b{{font-size:20px}}
+.metrics{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}}
+.metrics span{{display:flex;flex-direction:column;justify-content:center;padding:14px 16px;background:#1a1f2b;border-radius:12px;min-height:84px}}
+.metrics b{{font-size:22px;color:#58a6ff;font-variant-numeric:tabular-nums;margin-top:2px}}
+.metrics .small{{margin-top:2px}}
 a{{color:#58a6ff}}
-.small{{color:#9aa0a6;font-size:13px}}
-#live td{{font-variant-numeric:tabular-nums}}
+.small{{font-size:12px;color:#7f8896;line-height:1.5}}
+p.lead{{font-size:14.5px;line-height:1.7;color:#c9d1d9;max-width:88ch}}
+#live{{border-radius:10px;overflow:hidden}}
+#live thead th{{background:#171d29}}
+#live td,#livefoot td{{font-variant-numeric:tabular-nums}}
+#live tbody tr:nth-child(odd){{background:#141920}}
+td.pct-pos{{color:#66bb6a}}
+td.pct-neg{{color:#ef5350}}
 </style></head><body>
+<div class="wrap">
 <h1>🐢 Stillwater（静水）</h1>
 <div class="tag">Low-Volatility Alpha for Bitget rTokens · Bitget AI Base Camp Hackathon S2 · Alpha Factory / rToken Factor Strategies</div>
 <p><i>"Still waters run deep." — the quietest 20% of the universe outperforms; we just filter the mud first.</i></p>
@@ -145,10 +158,10 @@ a{{color:#58a6ff}}
 <span>Sharpe <b>{m_net.get('sharpe')}</b><br><span class="small">vs {m_bench.get('sharpe')} benchmark</span></span>
 <span>Max DD <b>{m_net.get('max_dd_pct')}%</b><br><span class="small">vs {m_bench.get('max_dd_pct')}%</span></span>
 <span>Ann. vol <b>{m_net.get('ann_vol_pct')}%</b><br><span class="small">vs {m_bench.get('ann_vol_pct')}%</span></span>
-<span>Universe <b>{rets.shape[1]}</b> rTokens<br><span class="small">{rets.shape[0]} daily bars · 7×24</span></span>
+<span>Universe <b>{rets.shape[1]}</b><br><span class="small">rTokens · {rets.shape[0]} daily bars · 7×24</span></span>
 </div>
 
-<p><b>Thesis.</b> In a retail-dominated, liquidity-layered market, 19 of 20 classic US-equity factors fail
+<p class="lead"><b>Thesis.</b> In a retail-dominated, liquidity-layered market, 19 of 20 classic US-equity factors fail
 out-of-sample — the low-volatility anomaly survives. Weekly-rebalanced, equal-weight long portfolio of the
 <b>lowest-vol quintile among liquid names</b> (20d median quote-volume ≥ cross-sectional median; 40d volatility;
 10bps/side). Window {rets.index[60].date()} → {rets.index[-1].date()}, OS starts {split.date()}.
@@ -195,7 +208,7 @@ html = (html_top
                 .replace("__SPLIT__", str(split.date()))
                 .replace("__CACHED__", json.dumps({sy: float(P["close"][sy].dropna().iloc[-1]) for sy in held_syms}))
                 .replace("__WT__", json.dumps({sy: float(held[sy]) for sy in held_syms}))
-        + "</body></html>")
+        )
 
 out = ROOT / "docs" / "index.html"
 out.parent.mkdir(exist_ok=True)
