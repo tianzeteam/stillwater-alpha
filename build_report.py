@@ -171,6 +171,17 @@ Data via the official Bitget V3 SDK. Reproduce: <a href="https://github.com/tian
 This table is the anti-overfitting evidence chain.</p>
 <table><thead><tr><th>Factor</th><th>Evidence</th><th>Verdict</th></tr></thead><tbody>{gy}</tbody></table>
 
+<h2>🧬 rToken-native weekend-session factors <span class="small">(structurally impossible in traditional markets)</span></h2>
+<p class="small">Computed on the compressed weekend-bar series (Sat bars only exist since Jun 2026); designed on IS, one-shot verification on OS; overlay λ picked on IS only.</p>
+<table><thead><tr><th>Factor</th><th>IS IC (t)</th><th>OS IC (t)</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>Weekend momentum wk_mom4</td><td>+0.025 (0.57)</td><td>+0.080 (0.88)</td><td>right direction OS, t insufficient</td></tr>
+<tr><td>Weekend vol share wk_volsh</td><td>+0.018 (0.53)</td><td>-0.015 (-0.19)</td><td>sign flip — dead</td></tr>
+<tr><td>Weekend liq share wk_liqsh</td><td>-0.111 (-3.15)</td><td>+0.016 (0.25)</td><td>significant IS, flips OS — dead</td></tr>
+<tr><td>Weekend reversal wk_rev</td><td>+0.019 (0.43)</td><td>+0.045 (0.57)</td><td>too weak</td></tr>
+<tr><td>Overlays on low-vol core (IS-picked λ)</td><td>—</td><td>OS 0.07~-0.31 vs 1.55 base</td><td>IS-tuning trap caught by our own pipeline — dead</td></tr>
+</tbody></table>
+<p><b>Liquidity-gate ablation (original contribution).</b> The 113-name universe carries zero zombie contamination — the thinnest name in the low-vol quintile trades &gt;$5M/day, so an absolute floor ($0.1M-$5M) never binds in backtest and is kept purely as a live-deployment guard. The <i>relative</i> median gate is the opposite of a drag: it is the only configuration whose OS&gt;IS across both daily and weekly rebalancing (OS 1.67 / 1.55). Removing the gate yields OS 2.33 on daily rebalancing but collapses to 0.19 on weekly — <b>frequency-fragile, therefore rejected</b>. The gate buys robustness, not return.</p>
+
 <p class="small">Built for the Bitget AI Base Camp Hackathon S2. #BitgetHackathon @Bitget_AI</p>"""
 __EQ__ = series(eq_s)
 __DD_S__ = series(dd_s)
