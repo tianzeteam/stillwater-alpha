@@ -145,12 +145,34 @@ p.lead{{font-size:14.5px;line-height:1.7;color:#c9d1d9;max-width:88ch}}
 #live{{border-radius:10px;overflow:hidden}}
 #live thead th{{background:#171d29}}
 #live td,#livefoot td{{font-variant-numeric:tabular-nums}}
-#live tbody tr:nth-child(odd){{background:#141920}}
+tbody tr:nth-child(odd) td{{background:#141920}}
 td.pct-pos{{color:#66bb6a}}
 td.pct-neg{{color:#ef5350}}
+
+.topnav{{position:sticky;top:0;z-index:50;display:flex;gap:8px;flex-wrap:wrap;
+ padding:10px 20px;margin:0 -20px 6px;background:rgba(14,17,23,0.92);
+ border-bottom:1px solid #2b3548;backdrop-filter:blur(8px)}}
+.topnav a{{font-size:13px;color:#9aa0a6;text-decoration:none;background:#1a1f2b;
+ border-radius:999px;padding:5px 12px;transition:color 120ms cubic-bezier(0.2,0,0,1)}}
+.topnav a:hover{{color:#8ab4f8}}
+a:focus-visible{{outline:none;box-shadow:0 0 0 2px #00b0ff}}
+h2{{scroll-margin-top:64px}}
+@media (max-width:720px){{
+ body{{padding-top:0}}
+ h1{{font-size:28px}}
+ .topnav{{padding:8px 16px;gap:6px;overflow-x:auto;flex-wrap:nowrap}}
+ .topnav a{{flex:0 0 auto;padding:4px 10px}}
+ table{{font-size:12.5px}}
+ td,th{{padding:6px 8px}}
+ .metrics{{grid-template-columns:repeat(2,1fr)}}
+}}
+@media (max-width:720px){{ .live-wrap{{overflow-x:auto}} .live-wrap table{{min-width:560px}} }}
 </style></head><body>
 <div class="wrap">
-<h1>🐢 Stillwater（静水）</h1>
+<nav class="topnav" aria-label="Sections">
+<a href="#top">Overview</a><a href="#s-equity">Equity</a><a href="#s-live">Live</a>
+<a href="#s-cost">Costs</a><a href="#s-grave">Graveyard</a><a href="#s-wknd">Weekend</a>
+</nav>🐢 Stillwater（静水）</h1>
 <div class="tag">Low-Volatility Alpha for Bitget rTokens · Bitget AI Base Camp Hackathon S2 · Alpha Factory / rToken Factor Strategies</div>
 <p><i>"Still waters run deep." — the quietest 20% of the universe outperforms; we just filter the mud first.</i></p>
 
@@ -167,24 +189,24 @@ out-of-sample — the low-volatility anomaly survives. Weekly-rebalanced, equal-
 10bps/side). Window {rets.index[60].date()} → {rets.index[-1].date()}, OS starts {split.date()}.
 Data via the official Bitget V3 SDK. Reproduce: <a href="https://github.com/tianzeteam/stillwater-alpha">github.com/tianzeteam/stillwater-alpha</a> → <code>python3 src/run.py</code></p>
 
-<h2>Equity curve</h2>
+<h2 id="s-equity">Equity curve</h2>
 <div id="eq" style="height:460px"></div>
 <div id="dd" style="height:280px"></div>
 
-<h2>Live portfolio <span class="small">(ticks fetched client-side from api.bitget.com — CORS open)</span></h2>
+<h2 id="s-live">Live portfolio <span class="small">(ticks fetched client-side from api.bitget.com — CORS open)</span></h2>
 <table id="live"><thead><tr><th>Symbol</th><th>Weight</th><th>Cached close</th><th>Live last</th><th>Δ</th><th>Status</th></tr></thead>
 <tbody id="livebody"></tbody></table>
 <p class="small" id="livefoot"></p>
 
-<h2>Cost sensitivity <span class="small">(full sample, applied to actual daily turnover)</span></h2>
+<h2 id="s-cost">Cost sensitivity <span class="small">(full sample, applied to actual daily turnover)</span></h2>
 <div id="cost" style="height:320px"></div>
 
-<h2>⚰️ Factor graveyard — 20 tested, 19 dead</h2>
+<h2 id="s-grave">⚰️ Factor graveyard — 20 tested, 19 dead</h2>
 <p class="small">Same harness for every factor: daily rank-IC, weekly-rebalanced long portfolio, liquidity screen, 10bps/side.
 This table is the anti-overfitting evidence chain.</p>
 <table><thead><tr><th>Factor</th><th>Evidence</th><th>Verdict</th></tr></thead><tbody>{gy}</tbody></table>
 
-<h2>🧬 rToken-native weekend-session factors <span class="small">(structurally impossible in traditional markets)</span></h2>
+<h2 id="s-wknd">🧬 rToken-native weekend-session factors <span class="small">(structurally impossible in traditional markets)</span></h2>
 <p class="small">Computed on the compressed weekend-bar series (Sat bars only exist since Jun 2026); designed on IS, one-shot verification on OS; overlay λ picked on IS only.</p>
 <table><thead><tr><th>Factor</th><th>IS IC (t)</th><th>OS IC (t)</th><th>Verdict</th></tr></thead><tbody>
 <tr><td>Weekend momentum wk_mom4</td><td>+0.025 (0.57)</td><td>+0.080 (0.88)</td><td>right direction OS, t insufficient</td></tr>
