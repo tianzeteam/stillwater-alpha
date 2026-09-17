@@ -1,0 +1,125 @@
+venue:
+  name: BITGET
+  account_type: CASH
+  oms_type: NETTING
+  starting_balances:
+    - amount: 10000
+      currency: USDT
+
+strategy:
+  module: strategy
+  class: StillwaterRotationStrategy
+  config_class: StillwaterConfig
+  config:
+    order_id_tag: "001"
+
+instruments:
+  - id: RQQQUSDT.BITGET
+    kind: spot
+    raw_symbol: RQQQUSDT
+    base_currency: RQQQ
+    quote_currency: USDT
+    price_precision: 2
+    size_precision: 4
+    price_increment: "0.01"
+    size_increment: "0.0001"
+    lot_size: "0.0001"
+    maker_fee: "0.001"
+    taker_fee: "0.001"
+    bar_type: RQQQUSDT.BITGET-1-DAY-LAST-EXTERNAL
+  - id: RSPYUSDT.BITGET
+    kind: spot
+    raw_symbol: RSPYUSDT
+    base_currency: RSPY
+    quote_currency: USDT
+    price_precision: 2
+    size_precision: 4
+    price_increment: "0.01"
+    size_increment: "0.0001"
+    lot_size: "0.0001"
+    maker_fee: "0.001"
+    taker_fee: "0.001"
+    bar_type: RSPYUSDT.BITGET-1-DAY-LAST-EXTERNAL
+  - id: RTSMUSDT.BITGET
+    kind: spot
+    raw_symbol: RTSMUSDT
+    base_currency: RTSM
+    quote_currency: USDT
+    price_precision: 2
+    size_precision: 4
+    price_increment: "0.01"
+    size_increment: "0.0001"
+    lot_size: "0.0001"
+    maker_fee: "0.001"
+    taker_fee: "0.001"
+    bar_type: RTSMUSDT.BITGET-1-DAY-LAST-EXTERNAL
+  - id: RVOOUSDT.BITGET
+    kind: spot
+    raw_symbol: RVOOUSDT
+    base_currency: RVOO
+    quote_currency: USDT
+    price_precision: 2
+    size_precision: 4
+    price_increment: "0.01"
+    size_increment: "0.0001"
+    lot_size: "0.0001"
+    maker_fee: "0.001"
+    taker_fee: "0.001"
+    bar_type: RVOOUSDT.BITGET-1-DAY-LAST-EXTERNAL
+  - id: RAAPLUSDT.BITGET
+    kind: spot
+    raw_symbol: RAAPLUSDT
+    base_currency: RAAPL
+    quote_currency: USDT
+    price_precision: 2
+    size_precision: 4
+    price_increment: "0.01"
+    size_increment: "0.0001"
+    lot_size: "0.0001"
+    maker_fee: "0.001"
+    taker_fee: "0.001"
+    bar_type: RAAPLUSDT.BITGET-1-DAY-LAST-EXTERNAL
+  - id: RNVDAUSDT.BITGET
+    kind: spot
+    raw_symbol: RNVDAUSDT
+    base_currency: RNVDA
+    quote_currency: USDT
+    price_precision: 2
+    size_precision: 4
+    price_increment: "0.01"
+    size_increment: "0.0001"
+    lot_size: "0.0001"
+    maker_fee: "0.001"
+    taker_fee: "0.001"
+    bar_type: RNVDAUSDT.BITGET-1-DAY-LAST-EXTERNAL
+  - id: RMSFTUSDT.BITGET
+    kind: spot
+    raw_symbol: RMSFTUSDT
+    base_currency: RMSFT
+    quote_currency: USDT
+    price_precision: 2
+    size_precision: 4
+    price_increment: "0.01"
+    size_increment: "0.0001"
+    lot_size: "0.0001"
+    maker_fee: "0.001"
+    taker_fee: "0.001"
+    bar_type: RMSFTUSDT.BITGET-1-DAY-LAST-EXTERNAL
+  - id: RGOOGLUSDT.BITGET
+    kind: spot
+    raw_symbol: RGOOGLUSDT
+    base_currency: RGOOGL
+    quote_currency: USDT
+    price_precision: 2
+    size_precision: 4
+    price_increment: "0.01"
+    size_increment: "0.0001"
+    lot_size: "0.0001"
+    maker_fee: "0.001"
+    taker_fee: "0.001"
+    bar_type: RGOOGLUSDT.BITGET-1-DAY-LAST-EXTERNAL
+
+execution:
+  start: "2025-11-10T00:00:00Z"
+  end: "2026-09-07T00:00:00Z"
+

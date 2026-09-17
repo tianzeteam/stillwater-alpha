@@ -73,3 +73,13 @@ tests/            20 个单元测试（防前视、僵尸标的隔离、重试�
 ```
 
 运行测试：`python3 -m pytest tests/ -q`
+
+## Playbook（已发布）
+
+策略已同步发布到 Bitget Playbook（GetAgent）市场：**Stillwater Low-Vol Rotation (rTokens) v1.0.0**
+（`playbook/stillwater-lowvol/`，GetAgent Skill 全流程：本地校验 → 上传 → 沙箱回测 → publish）。
+
+沙箱回测（官方 Nautilus 引擎，8 只流动性 rToken 池，2025-11-10 → 2026-09-07，双边 10bps）：
+策略收益 **+5.19%**，最大回撤 **-4.02%**，周度等权持有池内波动最低的 3 只（本期 = RVOO / RSPY / RQQQ，
+全窗口选择稳定 → 表现为低波篮子买入持有，与论文一致）。订阅/参数在 GetAgent 页面操作：
+`strategy_id 7820bc3b-2cbf-42a6-9aea-6c694d78995c`。

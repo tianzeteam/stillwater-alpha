@@ -1,0 +1,114 @@
+name: stillwater-lowvol
+version: "0.1.0"
+display_name: "Stillwater Low-Vol Rotation (rTokens)"
+display_name_i18n:
+  en: "Stillwater Low-Vol Rotation (rTokens)"
+  zh: "静水低波轮动（rToken 篮子）"
+  zh-tw: "靜水低波輪動（rToken 籃子）"
+  es: "Rotación Stillwater de baja volatilidad (rTokens)"
+  ja: "Stillwater 低ボラティリティ・ローテーション（rToken）"
+  vi: "Xoay vòng biến động thấp Stillwater (rTokens)"
+description: "Weekly low-volatility rotation across liquid Bitget rTokens; holds the quietest names equally."
+description_i18n:
+  en: "Weekly low-volatility rotation across liquid Bitget rTokens; holds the quietest names equally."
+  zh: "在流动性达标的 Bitget rToken 中，每周轮动持有波动最低的一篮子标的（等权）。"
+  zh-tw: "在流動性達標的 Bitget rToken 中，每週輪動持有波動最低的一籃子標的（等權）。"
+  es: "Rotación semanal hacia los rTokens de Bitget más líquidos con menor volatilidad, en pesos iguales."
+  ja: "流動性のある Bitget rToken の中から、週次で最もボラティリティの低い銘柄を等金額で保有します。"
+  vi: "Xoay vòng hàng tuần giữa các rToken của Bitget thanh khoản, giữ đều các mã ít biến động nhất."
+long_description: |
+  This Playbook is a low-volatility rotation strategy for Bitget rTokens, the
+  tokenized stock instruments that trade around the clock. The thesis behind it
+  comes from a simple observation: in a retail-dominated market where attention
+  chases whatever moved yesterday, the assets that quietly refuse to swing tend
+  to compound steadily and protect their holders during turbulent stretches.
+  Rather than hunting for the next dramatic breakout, the strategy aims to own
+  the calmest corner of the tokenized equity universe and let time do the work.
+
+  It enters long, equally weighted, only in the names whose recent realized
+  volatility is among the lowest of the configured basket, and only when a
+  liquidity screen confirms those names actually trade enough volume to be
+  enterable and exitable without paying away the edge. The basket is user
+  configurable, so you decide which tokenized stocks and index tokens form the
+  candidate pool. Names that are too quiet, too thin, or too volatile are
+  simply left out of that week's portfolio.
+
+  It exits with the same discipline. When a holding's volatility no longer
+  qualifies it for the quietest group, or when its liquidity deteriorates
+  below the portfolio standard, the position is closed at the next scheduled
+  rotation and the proceeds rotate into whichever names currently qualify.
+  There is no leverage, no shorting, and no stop-loss discipline beyond the
+  weekly reselection itself; risk is managed by simply refusing to own the
+  loudest names in the market.
+
+  Subscribers can tune two things. The candidate pool sets which tokenized
+  stocks and index tokens the strategy may own, and widening it spreads risk
+  across more names while increasing data load. The portfolio size control
+  decides how many of the quietest candidates are held at once: holding fewer
+  concentrates the bet on stability, while holding more diversifies across the
+  basket at the cost of diluting the low-volatility tilt. The margin budget is
+  the capital the platform sizes orders against and the denominator for the
+  return you see.
+
+  The main risk is regime: in a violent selloff everything sells off together
+  and the quietest names still fall, so this Playbook will underperform cash
+  in broad tokenized-equity bear markets. It also lags in frenzied bull runs
+  driven by high-beta names, and thin tokenized listings can gap or stall.
+  Past sandbox results never guarantee future returns; treat this as a
+  conservative core holding, not a moonshot.
+market_type: spot
+trading_symbols:
+  - RQQQUSDT
+  - RSPYUSDT
+  - RTSMUSDT
+  - RVOOUSDT
+  - RAAPLUSDT
+  - RNVDAUSDT
+  - RMSFTUSDT
+  - RGOOGLUSDT
+tags: ["rwa", "low-volatility", "rotation", "spot", "weekly"]
+schedule:
+  cron: "0 13 * * 1"
+  tz: "Asia/Shanghai"
+decision_mode: deterministic
+backtest_support: full
+runtime_profile: deterministic
+execution_mode: follow_trade
+follow_trade_supported: true
+
+strategy_config:
+  trading_symbols:
+    - RQQQUSDT
+    - RSPYUSDT
+    - RTSMUSDT
+    - RVOOUSDT
+    - RAAPLUSDT
+    - RNVDAUSDT
+    - RMSFTUSDT
+    - RGOOGLUSDT
+  top_n: 3
+  vol_lookback: 40
+  gate_lookback: 20
+  rebal_interval_days: 7
+  margin_budget: "50"
+
+user_config_schema:
+  trading_symbols:
+    type: array
+    item_type: string
+    default: ["RQQQUSDT", "RSPYUSDT", "RTSMUSDT", "RVOOUSDT", "RAAPLUSDT", "RNVDAUSDT", "RMSFTUSDT", "RGOOGLUSDT"]
+    options: ["RQQQUSDT", "RQQQMUSDT", "RSPYUSDT", "RTSMUSDT", "RVOOUSDT", "RAAPLUSDT", "RNVDAUSDT", "RMSFTUSDT", "RGOOGLUSDT", "RBRKUSDT", "RHOODUSDT", "RCOINUSDT"]
+    min_items: 2
+    max_items: 10
+    label: "Candidate rTokens"
+  top_n:
+    type: integer
+    default: 3
+    min: 1
+    max: 5
+    label: "Names held per rebalance"
+  margin_budget:
+    type: string
+    default: "50"
+    pattern: "^[0-9]+(\\.[0-9]+)?$"
+    label: "Margin budget USDT"
